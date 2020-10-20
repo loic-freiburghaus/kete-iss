@@ -1,0 +1,52 @@
+version: '3'
+services:
+  influxdb:
+    # InfluxDB Version 1.8.0. Not tagged as latest because soon InfluxDB 2.0 will
+    # released, bringing major changes
+    image: influxdb:1.8.0
+    #Expose port 8086
+    ports:
+      - '8086:8086'
+    #Persistant volume for data
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    #Environment variables for setting credentials, taken from a .env file
+    environment:
+      - INFLUXDB_USERNAME=${INFLUXDB_USERNAME}
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD}
+  grafana:
+    #Local image or Docker Hub image
+    image: grafana/grafana
+    #image: lofrei/iss-grafana
+    #Expose port 3000
+    ports:
+      - '3000:3000'
+    #Allow link to influxdb container
+    links:
+      - influxdb
+    #Environment variables for setting credentials, taken from a .env file
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_INSTALL_PLUGINS=pr0ps-trackmap-panel
+  stream:
+    #Local image or Docker Hub image
+    image: stream
+    #image: lofrei/iss-stream
+    #Configure awslogs logging to log through CloudWatch
+    #logging:
+    #  driver: "awslogs"
+    #  options:
+    #    awslogs-region: "eu-central-1"
+    #    awslogs-group: "iss-group"
+    #    awslogs-stream-prefix: "iss-stream"
+    #Simulate tty console
+    #tty: true
+    #Allow link to influxdb container
+    links:
+      - influxdb
+volumes:
+  influxdb-storage:
