@@ -32,10 +32,8 @@ services:
     #  - consumer
 
   influxdb:
-    # InfluxDB Version 1.8.0. Not tagged as latest because soon InfluxDB 2.0 will
-    # released, bringing major changes
+    # InfluxDB Version 1.8.0. Not tagged as latest because soon InfluxDB 2.0 will be released, bringing major changes
     image: influxdb:1.8.0
-    #Expose port 8086
     #networks:
     #  - sb
     ports:
