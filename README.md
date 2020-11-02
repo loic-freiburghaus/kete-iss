@@ -2,8 +2,6 @@
 
 Git-Repository of the KETE-ISS Project.
 
-Hey
-
 ## Project Members
 
 * Tina Messner
