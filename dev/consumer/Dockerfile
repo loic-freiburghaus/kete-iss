@@ -1,17 +1,11 @@
-#Take ubuntu:20.04 as base image
-#FROM ubuntu:20.04
+#Take python:3 as base image
 FROM python:3
 
-#Move to /tmp/app as current directory
-#WORKDIR /tmp/app
-
-
-#RUN apt update -y && apt install -y python3-pip
-
+#Install the influxdb and kafka libraries
 RUN pip install influxdb kafka-python
 
 #Copy Python script
 COPY consumer.py .
 
-#Configure executed command at docker run
+#Configure command to execute at docker run
 CMD [ "python", "consumer.py" ]

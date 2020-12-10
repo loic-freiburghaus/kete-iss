@@ -1,41 +1,38 @@
 version: '3'
 
-#networks:
-#  sb:
-#    driver: bridge
-
 services:
 
   zookeeper:
+    #Latest wurstmeister/zookeeper image from the docker hub
     image: wurstmeister/zookeeper
     container_name: zookeeper
-    #networks:
-    #  - sb
+    #Accessible though port 2181
     ports:
       - "2181:2181"
 
   kafka:
+    #Latests wurstmeister/zookeeper image from the docker hub
     image: wurstmeister/kafka
     container_name: kafka
-    #networks:
-    #  - sb
+    #Accessible through port 9092
     ports:
       - "9092:9092"
-    environment: 
-      #KAFKA_ADVERTISED_HOST_NAME: localhost
+    #Configuration of the brokers and topics.
+    # - Hostname of the broker: kafka
+    # - Topic: sat-data, Partition: 1, Replication: 1
+    # - Connected to zookeeper trough port 2181
+    environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka
-      KAFKA_CREATE_TOPICS: "iss:1:1" #, test-topic2:1:1"
+      KAFKA_CREATE_TOPICS: "sat-data:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    #Link to zookeeper
     links:
       - zookeeper
-    #  - producer
-    #  - consumer
 
   influxdb:
-    # InfluxDB Version 1.8.0. Not tagged as latest because soon InfluxDB 2.0 will be released, bringing major changes
+    #InfluxDB Version 1.8.0. Not tagged as latest because soon InfluxDB 2.0 will be released, bringing major changes
     image: influxdb:1.8.0
-    #networks:
-    #  - sb
+    #Accessible trough port 8086
     ports:
       - '8086:8086'
     #Persistant volume for data
@@ -54,8 +51,6 @@ services:
     ports:
       - '3000:3000'
     #Allow link to influxdb container
-    #networks:
-    #  - sb
     links:
       - influxdb
     #Environment variables for setting credentials, taken from a .env file
@@ -64,27 +59,32 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
-      - GF_INSTALL_PLUGINS=pr0ps-trackmap-panel
+      - GF_INSTALL_PLUGINS=pr0ps-trackmap-panel, grafana-worldmap-panel, satellogic-3d-globe-panel
   
-  producer:
+  producer_ny20:
     #Local image or Docker Hub image
-    image: producer
-    container_name: producer
+    image: producer_ny20
+    container_name: producer_ny20
     #Simulate tty console
-    tty: true
-    #networks:
-    #  - sb
-    #Allow link to influxdb container
+    #tty: true
+    #Link to kafka
     links:
-    #  - influxdb
       - kafka
   
+  producer_wiss:
+    #Local image or Docker Hub image
+    image: producer_wiss
+    container_name: producer_wiss
+    #Simulate tty console
+    #tty: true
+    #Link to kafka
+    links:
+      - kafka
+
   consumer:
     image: consumer
     container_name: consumer
-    tty: true
-    #networks:
-    #  - sb
+    #tty: true
     links:
       - influxdb
       - kafka
