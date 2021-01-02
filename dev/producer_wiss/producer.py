@@ -14,8 +14,16 @@ import json
 #Constant for API URL.
 BASEURL = "https://api.wheretheiss.at/v1/satellites/25544"
 
-#Creation of the Kafka Producer to port 9092 in JSON format.
-producer = KafkaProducer(bootstrap_servers=['kafkahost:9092'], value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+consumerNotRunning = True
+
+while consumerNotRunning:
+    try:
+        #Creation of the Kafka Producer to port 9092 in JSON format.
+        producer = KafkaProducer(bootstrap_servers=['kafka:9092'], value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+        consumerNotRunning = False
+    except:
+        print("Error at creating")
+        sleep(1)
 
 #Infinite loop to get data from the n2yo API and sending it to kafka.
 while True:

@@ -1,0 +1,12 @@
+
+apiVersion: 1
+datasources:
+  - name: satellites
+    type: influxdb
+    access: proxy
+    database: satellites
+    user: ${INFLUXDB_USERNAME}
+    password: ${INFLUXDB_PASSWORD}
+    url: http://influxdb:8086
+    isDefault: true
+    editable: false

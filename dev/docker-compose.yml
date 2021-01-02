@@ -5,7 +5,7 @@ services:
   zookeeper:
     #Latest wurstmeister/zookeeper image from the docker hub
     image: wurstmeister/zookeeper
-    container_name: zookeeper
+    #container_name: zookeeper
     #Accessible though port 2181
     ports:
       - "2181:2181"
@@ -22,7 +22,7 @@ services:
     # - Topic: sat-data, Partition: 1, Replication: 1
     # - Connected to zookeeper trough port 2181
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: kafkahost
+      KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_CREATE_TOPICS: "sat-data:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     #Link to zookeeper
@@ -64,7 +64,7 @@ services:
   
   producer_n2yo:
     #Local image or Docker Hub image
-    #image: producer_ny20
+    #image: producer_n2yo
     image: freil10/producer_n2yo
     #container_name: producer_ny20
     #Simulate tty console

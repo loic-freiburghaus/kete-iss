@@ -9,6 +9,7 @@
 import json
 from kafka import KafkaConsumer
 from influxdb import InfluxDBClient
+from time import sleep
 
 # Constant for the name of the database.
 DB = "satellites"
@@ -24,9 +25,11 @@ consumerNotRunning = True
 while consumerNotRunning:
     try:
         # Create the kafka consumer on port 9092 for topic sat-data. Consuming JSON data.
-        consumer = KafkaConsumer('sat-data', bootstrap_servers=['kafkahost:9092'], value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+        consumer = KafkaConsumer('sat-data', bootstrap_servers=['kafka:9092'], value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+        consumerNotRunning = False
     except:
         print("Error at creating")
+        sleep(1)
 
 # For each incoming message
 for message in consumer:
