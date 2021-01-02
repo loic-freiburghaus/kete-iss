@@ -13,7 +13,7 @@ services:
   kafka:
     #Latests wurstmeister/zookeeper image from the docker hub
     image: wurstmeister/kafka
-    container_name: kafka
+    #container_name: kafka
     #Accessible through port 9092
     ports:
       - "9092:9092"
@@ -22,7 +22,7 @@ services:
     # - Topic: sat-data, Partition: 1, Replication: 1
     # - Connected to zookeeper trough port 2181
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_HOST_NAME: kafkahost
       KAFKA_CREATE_TOPICS: "sat-data:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     #Link to zookeeper
