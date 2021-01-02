@@ -47,7 +47,7 @@ services:
   grafana:
     #Local image or Docker Hub image
     #image: grafana/grafana
-    image: freil10/grafana
+    image: freil10/grafana:latest
     #Expose port 3000
     ports:
       - '3000:3000'
@@ -65,7 +65,7 @@ services:
   producer_n2yo:
     #Local image or Docker Hub image
     #image: producer_n2yo
-    image: freil10/producer_n2yo
+    image: freil10/producer_n2yo:latest
     #container_name: producer_ny20
     #Simulate tty console
     #tty: true
@@ -76,7 +76,7 @@ services:
   producer_wiss:
     #Local image or Docker Hub image
     #image: producer_wiss
-    image: freil10/producer_wiss
+    image: freil10/producer_wiss:latest
     #container_name: producer_wiss
     #Simulate tty console
     #tty: true
@@ -86,7 +86,7 @@ services:
 
   consumer:
     #image: consumer
-    image: freil10/consumer
+    image: freil10/consumer:latest
     #container_name: consumer
     #tty: true
     links:
