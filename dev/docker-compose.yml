@@ -62,11 +62,11 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
       - GF_INSTALL_PLUGINS=pr0ps-trackmap-panel, grafana-worldmap-panel, satellogic-3d-globe-panel
   
-  producer_ny20:
+  producer_n2yo:
     #Local image or Docker Hub image
     #image: producer_ny20
-    image: freil10/producer_ny20
-    container_name: producer_ny20
+    image: freil10/producer_n2yo
+    #container_name: producer_ny20
     #Simulate tty console
     #tty: true
     #Link to kafka
@@ -77,7 +77,7 @@ services:
     #Local image or Docker Hub image
     #image: producer_wiss
     image: freil10/producer_wiss
-    container_name: producer_wiss
+    #container_name: producer_wiss
     #Simulate tty console
     #tty: true
     #Link to kafka
@@ -87,7 +87,7 @@ services:
   consumer:
     #image: consumer
     image: freil10/consumer
-    container_name: consumer
+    #container_name: consumer
     #tty: true
     links:
       - influxdb
