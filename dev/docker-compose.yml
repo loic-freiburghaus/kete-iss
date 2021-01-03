@@ -26,8 +26,8 @@ services:
     #Link to zookeeper
     links:
       - zookeeper
-    volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
+    #volumes:
+    # - /var/run/docker.sock:/var/run/docker.sock
 
   influxdb:
     #InfluxDB Version 1.8.0. Not tagged as latest because soon InfluxDB 2.0 will be released, bringing major changes
