@@ -20,15 +20,15 @@ client.create_database(DB)
 # Automatically delete data from the database after 1 day.
 client.create_retention_policy("standard", "1d", 1, default=True, shard_duration="1d")
 
+#Wait until kafka is ready
 consumerNotRunning = True
-
 while consumerNotRunning:
     try:
         # Create the kafka consumer on port 9092 for topic sat-data. Consuming JSON data.
         consumer = KafkaConsumer('sat-data', bootstrap_servers=['kafka:9092'], value_deserializer=lambda m: json.loads(m.decode('utf-8')))
         consumerNotRunning = False
     except:
-        print("Error at creating")
+        print("Error at creating kafka consumer")
         sleep(1)
 
 # For each incoming message

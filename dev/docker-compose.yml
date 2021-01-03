@@ -5,8 +5,6 @@ services:
   zookeeper:
     #Latest wurstmeister/zookeeper image from the docker hub
     image: wurstmeister/zookeeper
-    tmpfs: "/datalog"
-    #container_name: zookeeper
     #Accessible though port 2181
     ports:
       - "2181:2181"
@@ -14,7 +12,6 @@ services:
   kafka:
     #Latests wurstmeister/zookeeper image from the docker hub
     image: wurstmeister/kafka
-    #container_name: kafka
     #Accessible through port 9092
     ports:
       - "9092:9092"
@@ -29,6 +26,8 @@ services:
     #Link to zookeeper
     links:
       - zookeeper
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
 
   influxdb:
     #InfluxDB Version 1.8.0. Not tagged as latest because soon InfluxDB 2.0 will be released, bringing major changes
@@ -67,9 +66,6 @@ services:
     #Local image or Docker Hub image
     #image: producer_n2yo
     image: freil10/producer_n2yo
-    #container_name: producer_ny20
-    #Simulate tty console
-    #tty: true
     #Link to kafka
     links:
       - kafka
@@ -78,9 +74,6 @@ services:
     #Local image or Docker Hub image
     #image: producer_wiss
     image: freil10/producer_wiss
-    #container_name: producer_wiss
-    #Simulate tty console
-    #tty: true
     #Link to kafka
     links:
       - kafka
@@ -88,8 +81,6 @@ services:
   consumer:
     #image: consumer
     image: freil10/consumer
-    #container_name: consumer
-    #tty: true
     links:
       - influxdb
       - kafka

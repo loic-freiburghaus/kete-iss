@@ -14,15 +14,15 @@ import json
 #Constant for API URL.
 BASEURL = "https://api.wheretheiss.at/v1/satellites/25544"
 
+#Wait until kafka is ready
 consumerNotRunning = True
-
 while consumerNotRunning:
     try:
         #Creation of the Kafka Producer to port 9092 in JSON format.
         producer = KafkaProducer(bootstrap_servers=['kafka:9092'], value_serializer=lambda v: json.dumps(v).encode('utf-8'))
         consumerNotRunning = False
     except:
-        print("Error at creating")
+        print("Error at creating kafka producer")
         sleep(1)
 
 #Infinite loop to get data from the n2yo API and sending it to kafka.
@@ -30,6 +30,7 @@ while True:
 
     #Requesting data from the Where Is The ISS API.
     response = requests.get(BASEURL).json()
+    #print(response)
 
     #Building the data JSON-object that is sent to kafka.
     data = {
